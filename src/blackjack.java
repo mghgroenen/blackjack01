@@ -6,79 +6,40 @@ import java.util.Scanner;
 
 public class blackjack {
 	public static void main(String[] args) {
-
-		//	Aanmaken kaarten
 		String kleur [] = {"harten", "ruiten", "schoppen", "klaveren"};
-		String waarde [] = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "boer", "vrouw", "heer", "aas"};
-		String kaarten [] = new String[52];
-		int counter = 0;
+		String waarde [] = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "boer", "vrouw", "heer", "aas"};		
+		Kaart [] kaarten = new Kaart [52];
 		
+		int card_counter = 0;
 		for(int i=0; i<kleur.length;i++) {
 			for(int j=0; j<waarde.length;j++) {
-				kaarten[counter] = kleur[i] + " " + waarde[j];
-				counter++;
+				kaarten[card_counter] = new Kaart(kleur[i], waarde[j]);
+				card_counter++;
 			}
 		}
-
-		//Schudden van kaarten
-		List<String> kaarten_list = new ArrayList<String>(Arrays.asList(kaarten));
-		Collections.shuffle(kaarten_list);
-//		System.out.println("Geschudde kaarten: ");
-//		for(String check : kaarten_list) {
-//			System.out.println("- " + check);
+		Collections.shuffle(Arrays.asList(kaarten));
+		
+//		for(Kaart check : kaarten) {
+//		System.out.println(check.naam);
 //		}	
-			
+		
 		//	Blackjack-loop
 		int totaal = 0;
-		List<String> gespeelde_kaarten = new ArrayList<String>();
+		int game_counter = 0;
 		
 		while (totaal < 21) {
 			//	Speler input
-			System.out.println("--- Kaarten over: " + kaarten_list.size() + " ---    (Nieuwe kaart: k | Pas: p | Stop spel: q)");
+			System.out.println("--- Kaarten over: " + (kaarten.length - game_counter) + " ---    (Nieuwe kaart: k | Pas: p | Stop spel: q)");
 			Scanner inputObj = new Scanner(System.in);
 			String input = inputObj.nextLine();
 			
 			//Controleren input
-			if (input.equals("k")==true) {
-				//Kaart toevoegen aan lijst met gespeelde kaarten
-				
-				
-				// Waarde optellen bij totaal				
-				if (kaarten_list.get(0).matches(".*\\b2\\b.*")==true) {
-					totaal += 2;
-				} else if (kaarten_list.get(0).matches(".*\\b3\\b.*")==true) {
-					totaal += 3;
-				} else if (kaarten_list.get(0).matches(".*\\b4\\b.*")==true) {
-					totaal += 4;
-				} else if (kaarten_list.get(0).matches(".*\\b5\\b.*")==true) {
-					totaal += 5;
-				} else if (kaarten_list.get(0).matches(".*\\b6\\b.*")==true) {
-					totaal += 6;
-				} else if (kaarten_list.get(0).matches(".*\\b7\\b.*")==true) {
-					totaal += 7;
-				} else if (kaarten_list.get(0).matches(".*\\b8\\b.*")==true) {
-					totaal += 8;
-				} else if (kaarten_list.get(0).matches(".*\\b9\\b.*")==true) {
-					totaal += 9;
-				} else if (kaarten_list.get(0).matches(".*\\b10\\b.*")==true) {
-					totaal += 10;
-				} else if (kaarten_list.get(0).matches(".*\\bboer\\b.*")==true) {
-					totaal += 10;
-				} else if (kaarten_list.get(0).matches(".*\\bvrouw\\b.*")==true) {
-					totaal += 10;
-				} else if (kaarten_list.get(0).matches(".*\\bheer\\b.*")==true) {
-					totaal += 10;
-				} else if (kaarten_list.get(0).matches(".*\\baas\\b.*")==true) {
-					totaal += 11;
-				}
-				
-				//	Kaart en totaal van speler tonen
-				System.out.println("Je kaart is de: " + kaarten_list.get(0) + ".");
+			if (input.equals("k")==true) {				
+				//	Kaart tonen en bij totaal optellen
+				System.out.println("Je kaart is de: " + kaarten[game_counter].naam + ".");
+				totaal += kaarten[game_counter].waarde;
 				System.out.println("Totaal: " + totaal);
-				
-				//	Kaart verplaatsen naar gespeelde lijst
-				gespeelde_kaarten.add(kaarten_list.get(0));
-				kaarten_list.remove(0);
+				game_counter++;
 				
 			//	Passen
 			} else if (input.equals("p")==true) {
@@ -103,12 +64,52 @@ public class blackjack {
 			System.out.println("Je hebt verloren!");
 		} else if (totaal < 21) {
 			;
-		}
+			}
 		
-		// Gekregen kaarten tonen
-		System.out.println("Gekregen kaarten: ");
-		for(String check : gespeelde_kaarten) {
-			System.out.println("- " + check);
-		}	
+		//	Getrokken kaarten tonen
+		System.out.println("Getrokken kaarten: ");
+		for(int i=0; i<game_counter;i++) {
+			System.out.println("- " + kaarten[i].naam);
+		}
+		System.exit(0);
+	}
+	static class Kaart {
+		String naam;
+		String kleur;
+		String plaatje;
+		int waarde;
+		
+		Kaart(String kleur, String plaatje) {
+			this.naam = (kleur + " " + plaatje);
+			this.kleur = kleur;
+			this.plaatje = plaatje;
+			if (plaatje.equals("2")==true) {
+				waarde = 2;
+			} else if (plaatje.equals("3")==true) {
+				waarde = 3;
+			} else if (plaatje.equals("4")==true) {
+				waarde = 4;
+			} else if (plaatje.equals("5")==true) {
+				waarde = 5;
+			} else if (plaatje.equals("6")==true) {
+				waarde = 6;
+			} else if (plaatje.equals("7")==true) {
+				waarde = 7;
+			} else if (plaatje.equals("8")==true) {
+				waarde = 8;
+			} else if (plaatje.equals("9")==true) {
+				waarde = 9;
+			} else if (plaatje.equals("10")==true) {
+				waarde = 10;
+			} else if (plaatje.equals("boer")==true) {
+				waarde = 10;
+			} else if (plaatje.equals("vrouw")==true) {
+				waarde = 10;
+			} else if (plaatje.equals("heer")==true) {
+				waarde = 10;
+			} else if (plaatje.equals("aas")==true) {
+				waarde = 11;
+			}
+		}
 	}
 }

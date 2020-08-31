@@ -1,5 +1,7 @@
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 
 public class blackjack {
 	public static void main(String[] args) {
@@ -14,9 +16,15 @@ public class blackjack {
 				counter++;
 			}
 		}
-		Collections.shuffle(Arrays.asList(kaarten));
-		for(String check : kaarten) {
-			System.out.println(check);
-		}
+		List<String> kaarten_list = new ArrayList<String>(Arrays.asList(kaarten));
+		Collections.shuffle(kaarten_list);
+		
+		System.out.println(kaarten_list.get(0));
+		kaarten_list.remove(0);	
+		
+		System.out.println(kaarten_list.size());
+//		for(String check : kaarten_list) {
+//			System.out.println(check);
+//		}
 	}
 }
